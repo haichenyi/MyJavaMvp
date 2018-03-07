@@ -7,6 +7,7 @@ import com.haichenyi.myproject.model.DataHelper;
 import com.haichenyi.myproject.model.http.HttpNoResult;
 import com.haichenyi.myproject.model.http.MyRxUtils;
 import com.haichenyi.myproject.model.http.MySubscriber;
+import com.haichenyi.myproject.utils.ToastUtils;
 
 import javax.inject.Inject;
 
@@ -33,7 +34,13 @@ public class MainPresenter extends BaseMvpPresenter<MainContract.IView>
         .subscribeWith(new MySubscriber<HttpNoResult>(baseView, true) {
           @Override
           public void onNext(HttpNoResult httpNoResult) {
+            ToastUtils.showTipMsg("网络请求成功");
+          }
 
+          @Override
+          public void onError(Throwable t) {
+            super.onError(t);
+            ToastUtils.showTipMsg("网络请求失败");
           }
         }));
 //    baseView.showTipMsg("加载数据");
