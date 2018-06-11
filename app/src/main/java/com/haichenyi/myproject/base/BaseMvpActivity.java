@@ -1,5 +1,7 @@
 package com.haichenyi.myproject.base;
 
+import android.arch.lifecycle.LifecycleObserver;
+
 import javax.inject.Inject;
 
 /**
@@ -7,28 +9,28 @@ import javax.inject.Inject;
  * Date: 2018/2/23
  * Desc:
  */
-public abstract class BaseMvpActivity<T extends BasePresenter>  extends BaseActivity{
-  @Inject
-  protected T basePresenter;
+public abstract class BaseMvpActivity<T extends BasePresenter> extends BaseActivity {
+    @Inject
+    protected T basePresenter;
 
-  @Override
-  @SuppressWarnings("unchecked")
-  protected void initView() {
-    super.initView();
-    initInject();
-    if (null != basePresenter) {
-      basePresenter.attachView(this);
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void initView() {
+        super.initView();
+        initInject();
+        if (basePresenter instanceof BaseMvpPresenter) {
+            getLifecycle().addObserver((LifecycleObserver) basePresenter);
+        }
+        if (null != basePresenter) {
+            basePresenter.attachView(this);
+        }
     }
-  }
 
-  protected abstract void initInject();
+    protected abstract void initInject();
 
-  @Override
-  protected void onDestroy() {
-    if (null != basePresenter) {
-      basePresenter.detachView();
-      basePresenter = null;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        basePresenter = null;
     }
-    super.onDestroy();
-  }
 }
