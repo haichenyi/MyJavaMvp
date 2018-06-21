@@ -1,6 +1,7 @@
 package com.haichenyi.myproject.model.http;
 
 import android.support.v4.util.ArrayMap;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -60,7 +61,7 @@ public class MyHttpInterceptor implements Interceptor {
     param = param.replace("\"[", "[").replace("]\"", "]")
         .replace("\"{", "{").replace("}\"", "}")
         .replace("\\", "");
-//    LogUtils.d(Constants.HTTP_LOG, request.url().toString() + "\n" + param);
+    Log.e("wz", request.url().toString() + "\n" + param);
     return new Request.Builder()
         .url(request.url())
         .headers(request.headers())
